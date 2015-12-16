@@ -1,2 +1,9 @@
-# iOS-Openssl-libCurl-Build
-iOS Openssl libCurl Build shell script
+# Build-OpenSSL-cURL
+
+Build OpenSSL and libcurl iOS
+
+## Credits
+
+jasonacox
+https://github.com/jasonacox/Build-OpenSSL-cURL
+
