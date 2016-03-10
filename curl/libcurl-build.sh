@@ -24,8 +24,8 @@ if [ $1 -e "-h" ]; then
 fi
 
 if [ -z $1 ]; then
-	IOS_SDK_VERSION="9.1" #"9.1"
-	IOS_MIN_SDK_VERSION="5.1.1"
+	IOS_SDK_VERSION="9.2" #"9.1"
+	IOS_MIN_SDK_VERSION="6.0"
 	
 	TVOS_SDK_VERSION="9.0" #"9.0"
 	TVOS_MIN_SDK_VERSION="9.0"
@@ -35,12 +35,13 @@ else
 fi
 
 CURL_VERSION="curl-7.45.0"
+OPENSSL_REAL_NAME="openssl-1.0.1s"
 OPENSSL="${PWD}/../openssl"  
 OPENSSL_PATH="${OPENSSL}/iOS/lib"
 DEVELOPER=`xcode-select -print-path`
 CERT_PATH="${PWD}/ca.crt"
 
-IPHONEOS_DEPLOYMENT_TARGET="5.1.1"
+IPHONEOS_DEPLOYMENT_TARGET="6.0"
 
 
 buildIOS()
@@ -79,9 +80,9 @@ buildIOS()
 
 
 	if [ "${ARCH}" == "arm64" ]; then
-		./configure --host=aarch64-apple-darwin -prefix="/tmp/${CURL_VERSION}-iOS-${ARCH}" --enable-static --enable-shared --with-ssl=${OPENSSL}/iOS --with-zlib --disable-manual --disable-ftp --disable-file --disable-ldap --disable-ldaps --disable-rtsp --enable-proxy --disable-dict --disable-telnet --disable-tftp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-sspi --enable-ipv6 --disable-smb
+./configure --host=aarch64-apple-darwin -prefix="/tmp/${CURL_VERSION}-iOS-${ARCH}" --enable-static --enable-shared --with-ssl=${OPENSSL}/${OPENSSL_REAL_NAME}/ --with-zlib --disable-manual --disable-ftp --disable-file --disable-ldap --disable-ldaps --disable-rtsp --enable-proxy --disable-dict --disable-telnet --disable-tftp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-sspi --enable-ipv6 --disable-smb
 	else
-		./configure --host=${ARCH}-apple-darwin -prefix="/tmp/${CURL_VERSION}-iOS-${ARCH}" --enable-static --enable-shared --with-ssl=${OPENSSL}/iOS --with-zlib --disable-manual --disable-ftp --disable-file --disable-ldap --disable-ldaps --disable-rtsp --enable-proxy --disable-dict --disable-telnet --disable-tftp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-sspi --enable-ipv6 --disable-smb
+./configure --host=${ARCH}-apple-darwin -prefix="/tmp/${CURL_VERSION}-iOS-${ARCH}" --enable-static --enable-shared --with-ssl=${OPENSSL}/${OPENSSL_REAL_NAME}/ --with-zlib --disable-manual --disable-ftp --disable-file --disable-ldap --disable-ldaps --disable-rtsp --enable-proxy --disable-dict --disable-telnet --disable-tftp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-sspi --enable-ipv6 --disable-smb
 	fi
 
 	make -j8 >> "/tmp/${CURL_VERSION}-iOS-${ARCH}.log" 2>&1
@@ -92,20 +93,20 @@ buildIOS()
 
 
 echo "Cleaning up"
-rm -rf include/curl/* lib/*
+#rm -rf include/curl/* lib/*
 mkdir -p lib
 mkdir -p include/curl/
 rm -rf "/tmp/${CURL_VERSION}-*"
 rm -rf "/tmp/${CURL_VERSION}-*.log"
-rm -rf "${CURL_VERSION}"
-if [ ! -e ${CURL_VERSION}.tar.gz ]; then
-	echo "Downloading ${CURL_VERSION}.tar.gz"
-	curl -O http://curl.haxx.se/download/${CURL_VERSION}.tar.gz
-else
-	echo "Using ${CURL_VERSION}.tar.gz"
-fi
-echo "Unpacking curl"
-tar xfz "${CURL_VERSION}.tar.gz"
+#rm -rf "${CURL_VERSION}"
+#if [ ! -e ${CURL_VERSION}.tar.gz ]; then
+#	echo "Downloading ${CURL_VERSION}.tar.gz"
+#	curl -O http://curl.haxx.se/download/${CURL_VERSION}.tar.gz
+#else
+#	echo "Using ${CURL_VERSION}.tar.gz"
+#fi
+#echo "Unpacking curl"
+#tar xfz "${CURL_VERSION}.tar.gz"
 
 # iOS Build for each architecture
 buildIOS "armv7"
