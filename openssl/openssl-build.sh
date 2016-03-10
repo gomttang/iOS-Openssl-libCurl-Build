@@ -86,15 +86,15 @@ mkdir -p iOS/lib
 mkdir -p iOS/include/openssl/
 rm -rf "/tmp/${OPENSSL_VERSION}-*"
 rm -rf "/tmp/${OPENSSL_VERSION}-*.log"
-#rm -rf "${OPENSSL_VERSION}"
-#if [ ! -e ${OPENSSL_VERSION}.tar.gz ]; then
-#	echo "Downloading ${OPENSSL_VERSION}.tar.gz"
-#	curl -O https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz
-#else
-#	echo "Using ${OPENSSL_VERSION}.tar.gz"
-#fi
-#echo "Unpacking openssl"
-#tar xfz "${OPENSSL_VERSION}.tar.gz"
+rm -rf "${OPENSSL_VERSION}"
+if [ ! -e ${OPENSSL_VERSION}.tar.gz ]; then
+	echo "Downloading ${OPENSSL_VERSION}.tar.gz"
+	curl -L -O https://www.openssl.org/source/${OPENSSL_VERSION}.tar.gz
+else
+	echo "Using ${OPENSSL_VERSION}.tar.gz"
+fi
+echo "Unpacking openssl"
+tar xfz "${OPENSSL_VERSION}.tar.gz"
 
 
 

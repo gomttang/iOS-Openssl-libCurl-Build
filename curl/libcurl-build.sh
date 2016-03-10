@@ -93,20 +93,20 @@ buildIOS()
 
 
 echo "Cleaning up"
-#rm -rf include/curl/* lib/*
+rm -rf include/curl/* lib/*
 mkdir -p lib
 mkdir -p include/curl/
 rm -rf "/tmp/${CURL_VERSION}-*"
 rm -rf "/tmp/${CURL_VERSION}-*.log"
-#rm -rf "${CURL_VERSION}"
-#if [ ! -e ${CURL_VERSION}.tar.gz ]; then
-#	echo "Downloading ${CURL_VERSION}.tar.gz"
-#	curl -O http://curl.haxx.se/download/${CURL_VERSION}.tar.gz
-#else
-#	echo "Using ${CURL_VERSION}.tar.gz"
-#fi
-#echo "Unpacking curl"
-#tar xfz "${CURL_VERSION}.tar.gz"
+rm -rf "${CURL_VERSION}"
+if [ ! -e ${CURL_VERSION}.tar.gz ]; then
+	echo "Downloading ${CURL_VERSION}.tar.gz"
+	curl -L -O http://curl.haxx.se/download/${CURL_VERSION}.tar.gz
+else
+	echo "Using ${CURL_VERSION}.tar.gz"
+fi
+echo "Unpacking curl"
+tar xfz "${CURL_VERSION}.tar.gz"
 
 # iOS Build for each architecture
 buildIOS "armv7"
